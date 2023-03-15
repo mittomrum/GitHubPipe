@@ -3,10 +3,7 @@ name: validation 🔐
 on: workflow_dispatch
 
 jobs:
-  env:
-    UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
   check_if_license_exist:
-    name: Check if license exists
     runs-on: ubuntu-latest
     steps:
       - name: Success! - Found a license
@@ -17,7 +14,6 @@ jobs:
         run: exit 1
 
   check_variables:
-    name: Check variables
     runs-on: ubuntu-latest
     steps:
       run: |
@@ -35,7 +31,6 @@ jobs:
         fi
 
   validation:
-    name: Validation
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
