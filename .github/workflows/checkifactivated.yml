@@ -9,6 +9,9 @@ jobs:
     env:
       UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
     steps:
+      - name: Success! - Found a license
+        if: ${{ startsWith(env.UNITY_LICENSE, '<') }}
+        run: exit 0
       - name: Fail - No License XX
         if: ${{ !startsWith(env.UNITY_LICENSE, '<') }}
         run: exit 1
