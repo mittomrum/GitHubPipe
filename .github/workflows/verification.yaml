@@ -16,6 +16,7 @@ jobs:
   check_variables:
     runs-on: ubuntu-latest
     steps:
+      - name: Check Variables
       run: |
         if [[ -z "${UNITY_LICENSE}" ]]; then
           echo "UNITY_LICENSE is not set. Please set the secret in the repository settings."
