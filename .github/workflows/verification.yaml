@@ -6,13 +6,14 @@ jobs:
   check_if_license_exist:
     name: Check if Unity license exists
     runs-on: ubuntu-latest
+    env:
+      UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
     steps:
       - name: Success! - Found a license
-        if: ${{ startsWith(secrets.UNITY_LICENSE, '<') }}
+        if: ${{ startsWith(env.UNITY_LICENSE, '<') }}
         run: exit 0
       - name: Fail - No License XX
-        if: ${{ !startsWith(secrets.UNITY_LICENSE, '<') }}
-        run: exit 1
+        if: ${{ !startsWith(env.UNITY_LICENSE, '<') }}
   check_variables:
     needs: check_if_license_exist
     runs-on: ubuntu-latest
