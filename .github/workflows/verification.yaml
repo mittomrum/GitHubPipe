@@ -5,6 +5,8 @@ on: workflow_dispatch
 jobs:
   check_if_license_exist:
     runs-on: ubuntu-latest
+    env:
+      UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
     steps:
       - name: Success! - Found a license
         if: ${{ startsWith(env.UNITY_LICENSE, '<') }}
