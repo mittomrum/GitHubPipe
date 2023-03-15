@@ -4,16 +4,14 @@ on: workflow_dispatch
 
 jobs:
   check_if_license_exist:
-    name: Check for the Unity license
+    name: Check if Unity license exists
     runs-on: ubuntu-latest
-    env:
-      UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
     steps:
       - name: Success! - Found a license
-        if: ${{ startsWith(env.UNITY_LICENSE, '<') }}
+        if: ${{ startsWith(secrets.UNITY_LICENSE, '<') }}
         run: exit 0
       - name: Fail - No License XX
-        if: ${{ !startsWith(env.UNITY_LICENSE, '<') }}
+        if: ${{ !startsWith(secrets.UNITY_LICENSE, '<') }}
         run: exit 1
   check_variables:
     needs: check_if_license_exist
@@ -37,16 +35,20 @@ jobs:
             echo "UNITY_PASSWORD is not set. Please set the secret in the repository settings."
             exit 1
           fi
-  build:
+  validation:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Unity - Activate
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         uses: game-ci/unity-activate@v2.0.0
         with:
           unity-version: 2019.4.28f1
-          unity-serial: ${{ secrets.UNITY_LICENSE }}
-          unity-username: ${{ secrets.UNITY_USERNAME }}
-          unity-password: ${{ secrets.UNITY_PASSWORD }}
+          unity-serial: ${{ env.UNITY_LICENSE }}
+          unity-username: ${{ env.UNITY_USERNAME }}
+          unity-password: ${{ env.UNITY_PASSWORD }}
