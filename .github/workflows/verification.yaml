@@ -1,0 +1,39 @@
+name: Checks that setup is complete 🔐
+
+on: workflow_dispatch
+
+jobs:
+  check_if_license_exist:
+    name: Check for the Unity license
+    runs-on: ubuntu-latest
+    env:
+      UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+    steps:
+      - name: Success! - Found a license
+        if: ${{ startsWith(env.UNITY_LICENSE, '<') }}
+        run: exit 0
+      - name: Fail - No License XX
+        if: ${{ !startsWith(env.UNITY_LICENSE, '<') }}
+        run: exit 1
+  check_variables:
+    needs: check_if_license_exist
+    runs-on: ubuntu-latest
+    env:
+      UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+      UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+      UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+    steps:
+      - name: Check Variables
+        run: |
+          if [[ -z "${UNITY_LICENSE}" ]]; then
+            echo "UNITY_LICENSE is not set. Please set the secret in the repository settings."
+            exit 1
+          fi
+          if [[ -z "${UNITY_EMAIL}" ]]; then
+            echo "UNITY_EMAIL is not set. Please set the secret in the repository settings."
+            exit 1
+          fi
+          if [[ -z "${UNITY_PASSWORD}" ]]; then
+            echo "UNITY_PASSWORD is not set. Please set the secret in the repository settings."
+            exit 1
+          fi
