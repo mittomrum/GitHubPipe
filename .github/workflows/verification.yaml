@@ -1,6 +1,6 @@
 name: validation 🔐
 
-on: push
+on: workflow_dispatch
 
 jobs:
   check_if_license_exist:
