@@ -16,6 +16,7 @@ jobs:
         run: exit 1
 
   check_variables:
+    needs: check_if_license_exist
     runs-on: ubuntu-latest
     steps:
       - name: Check Variables
@@ -38,19 +39,20 @@ jobs:
           fi  
 
   validation:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v2
+    needs: check_variables
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-        - name: Unity - Activate
-          env:
-            UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-            UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-            UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-          uses: game-ci/unity-activate@v2.0.0
-          with:
-            unity-version: 2019.4.28f1
-            unity-serial: ${{ env.UNITY_LICENSE }}
-            unity-username: ${{ env.UNITY_USERNAME }}
-            unity-password: ${{ env.UNITY_PASSWORD }}
+      - name: Unity - Activate
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        uses: game-ci/unity-activate@v2.0.0
+        with:
+          unity-version: 2019.4.28f1
+          unity-serial: ${{ env.UNITY_LICENSE }}
+          unity-username: ${{ env.UNITY_USERNAME }}
+          unity-password: ${{ env.UNITY_PASSWORD }}
