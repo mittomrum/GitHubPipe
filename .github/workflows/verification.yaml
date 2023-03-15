@@ -11,8 +11,8 @@ jobs:
       - name: Success! - Found a license
         if: ${{ startsWith(env.UNITY_LICENSE, '<') }}
         run: exit 0
-      - name: Fail - No License XX
         if: ${{ !startsWith(env.UNITY_LICENSE, '<') }}
+      - name: Fail - No License XX
         run: exit 1
 
   check_variables:
