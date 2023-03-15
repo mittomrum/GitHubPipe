@@ -1,4 +1,4 @@
-name: Checks that setup is complete 🔐
+name: validation 🔐
 
 on: workflow_dispatch
 
