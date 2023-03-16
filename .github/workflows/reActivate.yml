@@ -1,11 +1,15 @@
 name: Reactivate
 on:
- workflow_dispatch
+ push
 
 jobs:
   acquire_ulf:
     name: Acquire .ulf file 🔑
     runs-on: ubuntu-latest
+    env:
+      UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+      UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+      UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v1
